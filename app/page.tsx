@@ -1,112 +1,303 @@
+'use client'
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { collection, addDoc, doc, getDoc } from "firebase/firestore";
+import { db } from "./firebase";
+
+async function fetchData(setNextOpening, setOpeningTime) {
+  const dato = doc(db, "open", "date");
+  const datoSnap = await getDoc(dato);
+  const time = doc(db, "open", "time");
+  const timeSnap = await getDoc(time);
+
+  if (datoSnap.exists()) {
+    setNextOpening(datoSnap.get('next_date'))
+  }
+  if (timeSnap.exists()) {
+    setOpeningTime(timeSnap.get('open_time'))
+  }
+}
 
 export default function Home() {
+
+  const [newOrder, setNewOrder] = useState({
+    name: '', 
+    phone: '', 
+    plain: 0,
+    plainVHO: 0,
+    plainGK: 0,
+    sesam: 0,
+    sesamVHO: 0,
+    sesamGK: 0,
+    mixed: 0,
+    mixedVHO: 0,
+    mixedGK: 0,
+    yoghurt: 0,
+    soedt: 0
+  })
+  const [nextOpening, setNextOpening] = useState('')
+  const [openingTime, setOpeningTime] = useState('')
+  const [loading, setLoading] = useState(true);
+  const [loadingAdd, setLoadingAdd] = useState(false);
+  const [showLove, setShowLove] = useState(false);
+  const [showError, setShowError] = useState(false);
+
+  useEffect(() => {
+    fetchData(setNextOpening, setOpeningTime).then(() => setLoading(false));;
+  }, []);
+
+  const addItem = async (e) => {
+    e.preventDefault()
+    if (newOrder.name !== '' && newOrder.phone !== '') {
+      
+      setShowError(false)
+      setLoadingAdd(true);
+
+      const now = new Date();
+
+      await addDoc(collection(db, 'orders'), {
+        name: newOrder.name,
+        phone: newOrder.phone,
+        plain: newOrder.plain,
+        plainVHO: newOrder.plainVHO,
+        plainGK: newOrder.plainGK,
+        sesam: newOrder.sesam,
+        sesamVHO: newOrder.sesamVHO,
+        sesamGK: newOrder.sesamGK,
+        mixed: newOrder.mixed,
+        mixedVHO: newOrder.mixedVHO,
+        mixedGK: newOrder.mixedGK,
+        yoghurt: newOrder.yoghurt,
+        soedt: newOrder.soedt,
+        time: now.toLocaleDateString()
+      }).then(() => {
+        setLoadingAdd(false);
+        setShowLove(true);
+      })
+      setNewOrder({name: '', phone: '', plain: 0, plainVHO: 0, plainGK: 0, sesam: 0, sesamVHO: 0, sesamGK: 0, mixed: 0, mixedVHO: 0, mixedGK: 0, yoghurt: 0, soedt: 0});
+    }
+    else {
+      setShowError(true)
+    }
+  }
+
+  // const THREE_DAYS_IN_MS = 3 * 24 * 60 * 60 * 1000;
+  // const NOW_IN_MS = new Date().getTime();
+
+  // const dateTimeAfterThreeDays = NOW_IN_MS + THREE_DAYS_IN_MS;
+
+  // const targetDate = new Date('05/03/2024');
+
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main>
+      <div className="flex flex-col items-center">
+        
+        <div className="bg-cover bg-center w-full h-full absolute top-0 left-0"
+            style={{ backgroundImage: `url('/facade3.png')`, backgroundAttachment: 'fixed', position: 'fixed', zIndex: -1 }}>
         </div>
-      </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+          {/* <Image src="/facade3.png" alt="Logo" width={0} height={0} sizes="100vw" style={{width: '100%', height: 'auto'}}/> */}
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+        <div className="z-20 my-40">
+          <Image src="/logo3.png" alt="Logo" width={300} height={200} />
+        </div>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+        {/* <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center z-20"> */}
+          <div className="card bg-base-100 shadow-xl mx-2">
+            <div className="card-body flex flex-col items-center">
+              <h3 className="text-xl mb-5" style={{color: '#240ECA'}}>Næste åbningsdato</h3>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
+              {loading ? (
+                <span className="loading loading-spinner" style={{color: '#240ECA'}}></span>
+              ) : (
+                <>
+                  <h3 className="text-2xl">{nextOpening}</h3>
+                  <h3 className="text-2xl">{openingTime}</h3>
+                </>
+              )}
+            {/* </div>
+          </div> */}
+        {/* </div> */}
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+        {/* <div className="absolute top-0 left-0 w-full flex items-center justify-center z-30"> */}
+        {/* <div className="card bg-base-100 shadow-xl">
+        <div className="card-body"> */}
+          <h3 className="mt-10 text-xl" style={{color: '#240ECA'}}>Pre-order</h3>
+            <form className="flex flex-col items-center">
+
+              <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text">Navn</span>
+                </div>
+                <input type="text" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.name} onChange={(e) => setNewOrder({...newOrder, name: e.target.value})}/>
+              </label>
+              
+              <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text">Telefon nr.</span>
+                </div>
+                <input type="text" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.phone} onChange={(e) => setNewOrder({...newOrder, phone: e.target.value})}/>
+              </label>
+
+              <div className="collapse collapse-arrow bg-base-200 mt-5">
+                <input type="checkbox" name="my-accordion-2" />
+                <h5 className="collapse-title text-lg font-medium">Plain boller</h5>
+                <div className="collapse-content flex flex-col">
+
+                  <label className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">Plain bolle</span>
+                    </div>
+                    {/* <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" /> */}
+                    <input type="number" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.plain} onChange={(e) => setNewOrder({...newOrder, plain: parseInt(e.target.value)})}/>
+                  </label>
+                  
+                  <label className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">Plain bolle m. smør og Vesterhavsost</span>
+                    </div>
+                    <input type="number" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.plainVHO} onChange={(e) => setNewOrder({...newOrder, plainVHO: parseInt(e.target.value)})}/>
+                  </label>
+                  
+                  <label className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">Plain bolle m. smør og Gammelknas</span>
+                    </div>
+                    <input type="number" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.plainGK} onChange={(e) => setNewOrder({...newOrder, plainGK: parseInt(e.target.value)})}/>
+                  </label>
+
+                </div>
+              </div>
+
+              <div className="collapse collapse-arrow bg-base-200 mt-2">
+                <input type="checkbox" name="my-accordion-2" />
+                <h5 className="collapse-title text-lg font-medium">Sesam boller</h5>
+                <div className="collapse-content flex flex-col">
+
+                  <label className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">Sesam bolle</span>
+                    </div>
+                    {/* <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" /> */}
+                    <input type="number" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.sesam} onChange={(e) => setNewOrder({...newOrder, sesam: parseInt(e.target.value)})}/>
+                  </label>
+                  
+                  <label className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">Sesam bolle m. smør og Vesterhavsost</span>
+                    </div>
+                    <input type="number" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.sesamVHO} onChange={(e) => setNewOrder({...newOrder, sesamVHO: parseInt(e.target.value)})}/>
+                  </label>
+                  
+                  <label className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">Sesam bolle m. smør og Gammelknas</span>
+                    </div>
+                    <input type="number" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.sesamGK} onChange={(e) => setNewOrder({...newOrder, sesamGK: parseInt(e.target.value)})}/>
+                  </label>
+
+                </div>
+              </div>
+              
+              <div className="collapse collapse-arrow bg-base-200 mt-2">
+                <input type="checkbox" name="my-accordion-2" />
+                <h5 className="collapse-title text-lg font-medium">Mixed kerne boller</h5>
+                <div className="collapse-content flex flex-col">
+
+                  <label className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">Mixed kerne bolle</span>
+                    </div>
+                    {/* <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" /> */}
+                    <input type="number" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.mixed} onChange={(e) => setNewOrder({...newOrder, mixed: parseInt(e.target.value)})}/>
+                  </label>
+                  
+                  <label className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">Mixed kerne bolle m. smør og Vesterhavsost</span>
+                    </div>
+                    <input type="number" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.mixedVHO} onChange={(e) => setNewOrder({...newOrder, mixedVHO: parseInt(e.target.value)})}/>
+                  </label>
+                  
+                  <label className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">Mixed kerne bolle m. smør og Gammelknas</span>
+                    </div>
+                    <input type="number" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.mixedGK} onChange={(e) => setNewOrder({...newOrder, mixedGK: parseInt(e.target.value)})}/>
+                  </label>
+
+                </div>
+              </div>
+
+              <div className="collapse collapse-arrow bg-base-200 mt-2">
+                <input type="checkbox" name="my-accordion-2" />
+                <h5 className="collapse-title text-lg font-medium">Yoghurt</h5>
+                <div className="collapse-content flex flex-col">
+
+                  <label className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">Yoghurt m. appelsinkompont og granola</span>
+                    </div>
+                    <input type="number" className="input input-bordered focus:border-blue-800 focus:outline-none w-full max-w-xs" value={newOrder.yoghurt} onChange={(e) => setNewOrder({...newOrder, yoghurt: parseInt(e.target.value)})}/>
+                  </label>
+
+                </div>
+              </div>
+              
+              <div className="collapse collapse-arrow bg-base-200 my-2">
+                <input type="checkbox" name="my-accordion-2" />
+                <h5 className="collapse-title text-lg font-medium">Sødt</h5>
+                <div className="collapse-content flex flex-col">
+
+                  <label className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">Kardemommesnurre</span>
+                    </div>
+                    <input type="number" className="input input-bordered focus:border-blue-800 focus:outline-none w-full max-w-xs" value={newOrder.soedt} onChange={(e) => setNewOrder({...newOrder, soedt: parseInt(e.target.value)})}/>
+                  </label>
+
+                </div>
+              </div>
+
+              <button className="btn btn-outline hover:bg-white text-white rounded-full mb-6 mt-5" style={{color: '#240ECA'}} type="submit" onClick={addItem}>
+                {loadingAdd ? (
+                <span className="loading loading-spinner" style={{color: '#240ECA'}}></span>
+                ) : (
+                  <>
+                    Bestil
+                  </>
+                )}
+              </button>
+              {showError && <p>Indtast navn og telefon nr. øverst!</p>}
+              {showLove && <p>Tusind tak ❤️</p>}
+
+            </form>
+        </div>
+        </div>
+
+
+        {/* <h3 className="text-2xl">{nextOpening}</h3>
+        <h3 className="text-2xl">{openingTime}</h3> */}
+
+        {/* <div>{targetDate.getDate()}</div> */}
+        {/* <CountdownTimer targetDate={dateTimeAfterThreeDays} /> */}
+        {/* <CountdownTimer2 targetDate={targetDate} /> */}
+
+          <h3 className="mt-10 text-lg text-white">Find os på Instagram</h3>
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-7 w-7 mb-10 mt-4"
+            fill="currentColor"
+            style={{ color: "white" }}
+            viewBox="0 0 24 24"
+          >
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+          </svg>
+
+          {/* <Image src="/boller.jpeg" alt="boller" width={400} height={300} className="my-20"/> */}
+
       </div>
     </main>
   );

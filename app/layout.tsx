@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+// import { Inter } from "next/font/google";
+import { Sora } from "next/font/google";
+// import { Indie_Flower } from "next/font/google";
+// import { Dekko } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const sora = Sora(
+  {
+    weight: "400",
+    subsets: ["latin"]
+  }
+);
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,8 +23,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" data-theme="light">
+      <body className={sora.className}>{children}</body>
     </html>
   );
 }
