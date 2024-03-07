@@ -5,7 +5,7 @@ import { db } from "../firebase";
 
 const AdminPage = () => {
 
-    const [orders, setOrders] = useState([])
+    const [orders, setOrders] = useState<any[]>([])
     const [nextOpening, setNextOpening] = useState('')
     const [openingTime, setOpeningTime] = useState('')
 
@@ -13,7 +13,7 @@ const AdminPage = () => {
         const q = query(collection(db, 'orders'))
         
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
-          const itemArr = [];
+          const itemArr: any = [];
   
           querySnapshot.forEach((doc) => {
             itemArr.push({...doc.data(), id: doc.id})
@@ -26,7 +26,7 @@ const AdminPage = () => {
   
     }, [])
   
-    const deleteItem = async (id) => {
+    const deleteItem = async (id: any) => {
       await deleteDoc(doc(db, 'orders', id))
     }
 
@@ -44,7 +44,7 @@ const AdminPage = () => {
       soedt: orders.reduce((total, item) => total + item.soedt, 0),
     };
 
-    const updateDate = async (e) => {
+    const updateDate = async (e: any) => {
       
       e.preventDefault()
 
@@ -57,7 +57,7 @@ const AdminPage = () => {
       setNextOpening('');
     }
 
-    const updateTime = async (e) => {
+    const updateTime = async (e: any) => {
       e.preventDefault()
 
       const time = doc(db, "open", "time");
@@ -159,7 +159,7 @@ const AdminPage = () => {
               ))}
 
               <tr className="bg-base-200">
-                <td colSpan="3">Total</td>
+                <td colSpan={3}>Total</td>
                 <td>{sums.plain}</td>
                 <td>{sums.plainVHO}</td>
                 <td>{sums.plainGK}</td>

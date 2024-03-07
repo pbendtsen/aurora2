@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { collection, addDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "./firebase";
 
-async function fetchData(setNextOpening, setOpeningTime) {
+async function fetchData(setNextOpening: any, setOpeningTime: any) {
   const dato = doc(db, "open", "date");
   const datoSnap = await getDoc(dato);
   const time = doc(db, "open", "time");
@@ -46,7 +46,7 @@ export default function Home() {
     fetchData(setNextOpening, setOpeningTime).then(() => setLoading(false));;
   }, []);
 
-  const addItem = async (e) => {
+  const addItem = async (e: any) => {
     e.preventDefault()
     if (newOrder.name !== '' && newOrder.phone !== '') {
       
