@@ -98,34 +98,6 @@ const AdminPage = () => {
 
         <p>{nextOpening}</p>
         <p>{openingTime}</p>
-        {/* <ul>
-            {orders.map((item, id) => (
-            <li key={id}>
-                <div>
-                    <p>Name: {item.name}</p>
-                    <p>Phone: {item.phone}</p>
-                    
-                    <p>Plain: {item.plain}</p>
-                    <p>Plain m. VHO: {item.plainVHO}</p>
-                    <p>Plain m. GK: {item.plainGK}</p>
-                    
-                    <p>Sesam: {item.sesam}</p>
-                    <p>Sesam m. VHO: {item.sesamVHO}</p>
-                    <p>Sesam m. GK: {item.sesamGK}</p>
-                    
-                    <p>Mixed: {item.mixed}</p>
-                    <p>Mixed m. VHO: {item.mixedVHO}</p>
-                    <p>Mixed m. GK: {item.mixedGK}</p>
-
-                    <p>Yoghurt: {item.yoghurt}</p>
-                    <p>Sødt: {item.soedt}</p>
-
-                    <span>{item.time}</span>
-                    <button onClick={() => deleteItem(item.id)}>X</button>
-                </div>
-            </li>
-            ))}
-        </ul> */}
 
         <div className="overflow-x-auto ml-10 mr-10">
           <table className='table'>
