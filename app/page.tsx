@@ -22,7 +22,8 @@ export default function Home() {
 
   const [newOrder, setNewOrder] = useState({
     name: '', 
-    phone: '', 
+    phone: '',
+    pickup: '', 
     plain: 0,
     plainVHO: 0,
     plainGK: 0,
@@ -33,7 +34,8 @@ export default function Home() {
     mixedVHO: 0,
     mixedGK: 0,
     yoghurt: 0,
-    soedt: 0
+    soedt: 0,
+    comment: ''
   })
   const [nextOpening, setNextOpening] = useState('')
   const [openingTime, setOpeningTime] = useState('')
@@ -58,6 +60,7 @@ export default function Home() {
       await addDoc(collection(db, 'orders'), {
         name: newOrder.name,
         phone: newOrder.phone,
+        pickup: newOrder.pickup,
         plain: newOrder.plain,
         plainVHO: newOrder.plainVHO,
         plainGK: newOrder.plainGK,
@@ -69,12 +72,13 @@ export default function Home() {
         mixedGK: newOrder.mixedGK,
         yoghurt: newOrder.yoghurt,
         soedt: newOrder.soedt,
+        comment: newOrder.comment,
         time: now.toLocaleDateString()
       }).then(() => {
         setLoadingAdd(false);
         setShowLove(true);
       })
-      setNewOrder({name: '', phone: '', plain: 0, plainVHO: 0, plainGK: 0, sesam: 0, sesamVHO: 0, sesamGK: 0, mixed: 0, mixedVHO: 0, mixedGK: 0, yoghurt: 0, soedt: 0});
+      setNewOrder({name: '', phone: '', pickup: '', plain: 0, plainVHO: 0, plainGK: 0, sesam: 0, sesamVHO: 0, sesamGK: 0, mixed: 0, mixedVHO: 0, mixedGK: 0, yoghurt: 0, soedt: 0, comment: ''});
     }
     else {
       setShowError(true)
@@ -130,6 +134,13 @@ export default function Home() {
                   <span className="label-text">Telefon nr.</span>
                 </div>
                 <input type="text" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.phone} onChange={(e) => setNewOrder({...newOrder, phone: e.target.value})}/>
+              </label>
+              
+              <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text">Forventet afhentningstidspunkt</span>
+                </div>
+                <input type="time" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.pickup} onChange={(e) => setNewOrder({...newOrder, pickup: e.target.value})}/>
               </label>
 
               <div className="collapse collapse-arrow bg-base-200 mt-5">
@@ -194,12 +205,12 @@ export default function Home() {
               
               <div className="collapse collapse-arrow bg-base-200 mt-2">
                 <input type="checkbox" name="my-accordion-2" />
-                <h5 className="collapse-title text-lg font-medium">Mixed kerne boller</h5>
+                <h5 className="collapse-title text-lg font-medium">Mixed seeds boller</h5>
                 <div className="collapse-content flex flex-col">
 
                   <label className="form-control w-full max-w-xs">
                     <div className="label">
-                      <span className="label-text">Mixed kerne bolle</span>
+                      <span className="label-text">Mixed seeds bolle</span>
                     </div>
                     {/* <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" /> */}
                     <input type="number" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.mixed} onChange={(e) => setNewOrder({...newOrder, mixed: parseInt(e.target.value)})}/>
@@ -207,14 +218,14 @@ export default function Home() {
                   
                   <label className="form-control w-full max-w-xs">
                     <div className="label">
-                      <span className="label-text">Mixed kerne bolle m. smør og Vesterhavsost</span>
+                      <span className="label-text">Mixed seeds bolle m. smør og Vesterhavsost</span>
                     </div>
                     <input type="number" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.mixedVHO} onChange={(e) => setNewOrder({...newOrder, mixedVHO: parseInt(e.target.value)})}/>
                   </label>
                   
                   <label className="form-control w-full max-w-xs">
                     <div className="label">
-                      <span className="label-text">Mixed kerne bolle m. smør og Gammelknas</span>
+                      <span className="label-text">Mixed seeds bolle m. smør og Gammelknas</span>
                     </div>
                     <input type="number" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.mixedGK} onChange={(e) => setNewOrder({...newOrder, mixedGK: parseInt(e.target.value)})}/>
                   </label>
@@ -229,7 +240,7 @@ export default function Home() {
 
                   <label className="form-control w-full max-w-xs">
                     <div className="label">
-                      <span className="label-text">Yoghurt m. appelsinkompont og granola</span>
+                      <span className="label-text">Månedlig yoghurt servering m. granola</span>
                     </div>
                     <input type="number" className="input input-bordered focus:border-blue-800 focus:outline-none w-full max-w-xs" value={newOrder.yoghurt} onChange={(e) => setNewOrder({...newOrder, yoghurt: parseInt(e.target.value)})}/>
                   </label>
@@ -244,13 +255,20 @@ export default function Home() {
 
                   <label className="form-control w-full max-w-xs">
                     <div className="label">
-                      <span className="label-text">Kardemommesnurre</span>
+                      <span className="label-text">Lemon glazed lemon poppy seed loaf m. mascarponecreme, pistaciekrokant, frisk mynte og citronskal</span>
                     </div>
                     <input type="number" className="input input-bordered focus:border-blue-800 focus:outline-none w-full max-w-xs" value={newOrder.soedt} onChange={(e) => setNewOrder({...newOrder, soedt: parseInt(e.target.value)})}/>
                   </label>
 
                 </div>
               </div>
+
+              <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text">Kommentar</span>
+                </div>
+                <textarea className="textarea textarea-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.comment} onChange={(e) => setNewOrder({...newOrder, comment: e.target.value})}/>
+              </label>
 
               <button className="btn btn-outline hover:bg-white text-white rounded-full mb-6 mt-5" style={{color: '#240ECA'}} type="submit" onClick={addItem}>
                 {loadingAdd ? (
@@ -268,17 +286,22 @@ export default function Home() {
         </div>
         </div>
 
-          <h3 className="mt-10 text-lg text-white">Find os på Instagram</h3>
+          <p className="mt-10 text-base text-white">
+            <a href="https://maps.app.goo.gl/DpTdvbrcZi1hXmheA" target="_blank">Nørrebrogade 200A, 2200 København</a>
+          </p>
 
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-7 w-7 mb-10 mt-4"
-            fill="currentColor"
-            style={{ color: "white" }}
-            viewBox="0 0 24 24"
-          >
-            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-          </svg>
+          <a href="https://www.instagram.com/bageriet_aurora?igsh=anhqdmRuc2FyZWM2" target="_blank">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-7 w-7 mb-10 mt-4"
+              fill="currentColor"
+              style={{ color: "white" }}
+              viewBox="0 0 24 24"
+            >
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+            </svg>
+
+          </a>
 
       </div>
     </main>

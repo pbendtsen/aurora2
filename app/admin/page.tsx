@@ -103,9 +103,10 @@ const AdminPage = () => {
           <table className='table'>
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Phone</th>
+                <th>Navn</th>
+                <th>Telf</th>
                 <th>Dato</th>
+                <th>Pick-up</th>
                 <th>Plain</th>
                 <th>Plain m. VHO</th>
                 <th>Plain m. GK</th>
@@ -117,6 +118,7 @@ const AdminPage = () => {
                 <th>Mixed m. GK</th>
                 <th>Yoghurt</th>
                 <th>Sødt</th>
+                <th>Kommentar</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -126,6 +128,7 @@ const AdminPage = () => {
                   <td>{item.name}</td>
                   <td>{item.phone}</td>
                   <td>{item.time}</td>
+                  <td>{item.pickup}</td>
                   <td>{item.plain}</td>
                   <td>{item.plainVHO}</td>
                   <td>{item.plainGK}</td>
@@ -137,6 +140,7 @@ const AdminPage = () => {
                   <td>{item.mixedGK}</td>
                   <td>{item.yoghurt}</td>
                   <td>{item.soedt}</td>
+                  <td>{item.comment}</td>
                   <td>
                     <button onClick={() => deleteItem(item.id)}>
                       <svg
@@ -159,7 +163,7 @@ const AdminPage = () => {
               ))}
 
               <tr className="bg-base-200">
-                <td colSpan={3}>Total</td>
+                <td colSpan={4}>Total</td>
                 <td>{sums.plain}</td>
                 <td>{sums.plainVHO}</td>
                 <td>{sums.plainGK}</td>
@@ -171,6 +175,8 @@ const AdminPage = () => {
                 <td>{sums.mixedGK}</td>
                 <td>{sums.yoghurt}</td>
                 <td>{sums.soedt}</td>
+                <td></td>
+                <td></td>
                 <td></td>
               </tr>
             </tbody>
