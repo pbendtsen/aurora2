@@ -35,6 +35,7 @@ export default function Home() {
     mixedGK: 0,
     yoghurt: 0,
     soedt: 0,
+    soedtUC: 0,
     comment: ''
   })
   const [nextOpening, setNextOpening] = useState('')
@@ -72,13 +73,14 @@ export default function Home() {
         mixedGK: newOrder.mixedGK,
         yoghurt: newOrder.yoghurt,
         soedt: newOrder.soedt,
+        soedtUC: newOrder.soedtUC,
         comment: newOrder.comment,
         time: now.toLocaleDateString()
       }).then(() => {
         setLoadingAdd(false);
         setShowLove(true);
       })
-      setNewOrder({name: '', phone: '', pickup: '', plain: 0, plainVHO: 0, plainGK: 0, sesam: 0, sesamVHO: 0, sesamGK: 0, mixed: 0, mixedVHO: 0, mixedGK: 0, yoghurt: 0, soedt: 0, comment: ''});
+      setNewOrder({name: '', phone: '', pickup: '', plain: 0, plainVHO: 0, plainGK: 0, sesam: 0, sesamVHO: 0, sesamGK: 0, mixed: 0, mixedVHO: 0, mixedGK: 0, yoghurt: 0, soedt: 0, soedtUC: 0, comment: ''});
     }
     else {
       setShowError(true)
@@ -151,6 +153,7 @@ export default function Home() {
                   <label className="form-control w-full max-w-xs">
                     <div className="label">
                       <span className="label-text">Plain bolle</span>
+                      <span className="label-text">13 kr.</span>
                     </div>
                     {/* <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" /> */}
                     <input type="number" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.plain} onChange={(e) => setNewOrder({...newOrder, plain: parseInt(e.target.value)})}/>
@@ -159,6 +162,7 @@ export default function Home() {
                   <label className="form-control w-full max-w-xs">
                     <div className="label">
                       <span className="label-text">Plain bolle m. smør og Vesterhavsost</span>
+                      <span className="label-text">35 kr.</span>
                     </div>
                     <input type="number" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.plainVHO} onChange={(e) => setNewOrder({...newOrder, plainVHO: parseInt(e.target.value)})}/>
                   </label>
@@ -166,6 +170,7 @@ export default function Home() {
                   <label className="form-control w-full max-w-xs">
                     <div className="label">
                       <span className="label-text">Plain bolle m. smør og Gammelknas</span>
+                      <span className="label-text">35 kr.</span>
                     </div>
                     <input type="number" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.plainGK} onChange={(e) => setNewOrder({...newOrder, plainGK: parseInt(e.target.value)})}/>
                   </label>
@@ -181,6 +186,7 @@ export default function Home() {
                   <label className="form-control w-full max-w-xs">
                     <div className="label">
                       <span className="label-text">Sesam bolle</span>
+                      <span className="label-text">13 kr.</span>
                     </div>
                     {/* <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" /> */}
                     <input type="number" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.sesam} onChange={(e) => setNewOrder({...newOrder, sesam: parseInt(e.target.value)})}/>
@@ -189,6 +195,7 @@ export default function Home() {
                   <label className="form-control w-full max-w-xs">
                     <div className="label">
                       <span className="label-text">Sesam bolle m. smør og Vesterhavsost</span>
+                      <span className="label-text">35 kr.</span>
                     </div>
                     <input type="number" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.sesamVHO} onChange={(e) => setNewOrder({...newOrder, sesamVHO: parseInt(e.target.value)})}/>
                   </label>
@@ -196,6 +203,7 @@ export default function Home() {
                   <label className="form-control w-full max-w-xs">
                     <div className="label">
                       <span className="label-text">Sesam bolle m. smør og Gammelknas</span>
+                      <span className="label-text">35 kr.</span>
                     </div>
                     <input type="number" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.sesamGK} onChange={(e) => setNewOrder({...newOrder, sesamGK: parseInt(e.target.value)})}/>
                   </label>
@@ -211,6 +219,7 @@ export default function Home() {
                   <label className="form-control w-full max-w-xs">
                     <div className="label">
                       <span className="label-text">Mixed seeds bolle</span>
+                      <span className="label-text">13 kr.</span>
                     </div>
                     {/* <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" /> */}
                     <input type="number" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.mixed} onChange={(e) => setNewOrder({...newOrder, mixed: parseInt(e.target.value)})}/>
@@ -219,6 +228,7 @@ export default function Home() {
                   <label className="form-control w-full max-w-xs">
                     <div className="label">
                       <span className="label-text">Mixed seeds bolle m. smør og Vesterhavsost</span>
+                      <span className="label-text">35 kr.</span>
                     </div>
                     <input type="number" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.mixedVHO} onChange={(e) => setNewOrder({...newOrder, mixedVHO: parseInt(e.target.value)})}/>
                   </label>
@@ -226,6 +236,7 @@ export default function Home() {
                   <label className="form-control w-full max-w-xs">
                     <div className="label">
                       <span className="label-text">Mixed seeds bolle m. smør og Gammelknas</span>
+                      <span className="label-text">35 kr.</span>
                     </div>
                     <input type="number" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.mixedGK} onChange={(e) => setNewOrder({...newOrder, mixedGK: parseInt(e.target.value)})}/>
                   </label>
@@ -255,7 +266,14 @@ export default function Home() {
 
                   <label className="form-control w-full max-w-xs">
                     <div className="label">
-                      <span className="label-text">Lemon glazed lemon poppy seed loaf m. mascarponecreme, pistaciekrokant, frisk mynte og citronskal</span>
+                      <span className="label-text">Lemon glazed lemon poppy seed loaf</span>
+                    </div>
+                    <input type="number" className="input input-bordered focus:border-blue-800 focus:outline-none w-full max-w-xs" value={newOrder.soedtUC} onChange={(e) => setNewOrder({...newOrder, soedtUC: parseInt(e.target.value)})}/>
+                  </label>
+                  
+                  <label className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">Lemon glazed lemon poppy seed loaf med mascarponecreme</span>
                     </div>
                     <input type="number" className="input input-bordered focus:border-blue-800 focus:outline-none w-full max-w-xs" value={newOrder.soedt} onChange={(e) => setNewOrder({...newOrder, soedt: parseInt(e.target.value)})}/>
                   </label>

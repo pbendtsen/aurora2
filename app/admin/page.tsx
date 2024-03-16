@@ -3,6 +3,26 @@ import { addDoc, collection, deleteDoc, doc, onSnapshot, query, updateDoc } from
 import React, { useEffect, useState } from 'react'
 import { db } from "../firebase";
 
+function sortTimes(times: any[]): any[] {
+  const definedTimes = times.filter(item => item.pickup !== undefined);
+  const undefinedTimes = times.filter(item => item.pickup === undefined);
+
+  definedTimes.sort((a, b) => {
+      if (a.pickup && b.pickup) {
+          const [aHour, aMinute] = a.pickup.split(':').map(Number);
+          const [bHour, bMinute] = b.pickup.split(':').map(Number);
+
+          if (aHour === bHour) {
+              return aMinute - bMinute;
+          }
+          return aHour - bHour;
+      }
+      return 0;
+  });
+
+  return definedTimes.concat(undefinedTimes);
+}
+
 const AdminPage = () => {
 
     const [orders, setOrders] = useState<any[]>([])
@@ -18,8 +38,10 @@ const AdminPage = () => {
           querySnapshot.forEach((doc) => {
             itemArr.push({...doc.data(), id: doc.id})
           });
-  
-          setOrders(itemArr);
+
+          const res = sortTimes(itemArr);
+
+          setOrders(res);
   
           return () => unsubscribe();
         });
@@ -103,6 +125,11 @@ const AdminPage = () => {
           <table className='table'>
             <thead>
               <tr>
+                <th>
+                  <label>
+                    <input type="checkbox" className="checkbox" />
+                  </label>
+                </th>
                 <th>Navn</th>
                 <th>Telf</th>
                 <th>Dato</th>
@@ -125,6 +152,11 @@ const AdminPage = () => {
             <tbody>
               {orders.map((item, id) => (
                 <tr key={id}>
+                  <td>
+                  <label>
+                    <input type="checkbox" className="checkbox" />
+                  </label>
+                  </td>
                   <td>{item.name}</td>
                   <td>{item.phone}</td>
                   <td>{item.time}</td>
