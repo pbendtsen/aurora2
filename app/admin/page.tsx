@@ -29,6 +29,7 @@ const AdminPage = () => {
     const router = useRouter();
 
     const [orders, setOrders] = useState<any[]>([])
+    const [doneOrders, setDoneOrders] = useState<any[]>([])
     const [nextOpening, setNextOpening] = useState('')
     const [openingTime, setOpeningTime] = useState('')
 
@@ -49,9 +50,14 @@ const AdminPage = () => {
             itemArr.push({...doc.data(), id: doc.id})
           });
 
-          const res = sortTimes(itemArr);
+          const doneList = itemArr.filter((order: any) => order.done === true)
+          const restList = itemArr.filter((order: any) => !order.done)
 
-          setOrders(res);
+          const doneListSorted = sortTimes(doneList);
+          const restListSorted = sortTimes(restList);
+
+          setOrders(restListSorted);
+          setDoneOrders(doneListSorted);
   
           return () => unsubscribe();
         });
@@ -61,6 +67,30 @@ const AdminPage = () => {
     const deleteItem = async (id: any) => {
       await deleteDoc(doc(db, 'orders', id))
     }
+    
+    const selectRow = async (id: any) => {
+      console.log("id: ", id)
+      const res = await updateDoc(doc(db, 'orders', id), {
+        done: true
+      })
+    }
+    
+    const toggleSelectRow = async (event: any, id: any) => {
+      console.log("id: ", id)
+      console.log("event: ", event)
+      if (event.target.checked === true) {
+        await updateDoc(doc(db, 'orders', id), {
+          done: true
+        })
+      }
+      else if (event.target.checked === false) {
+        await updateDoc(doc(db, 'orders', id), {
+          done: false
+        })
+      }
+    }
+
+
 
     const sums = {
       plain: orders.reduce((total, item) => total + item.plain, 0),
@@ -74,6 +104,20 @@ const AdminPage = () => {
       mixedGK: orders.reduce((total, item) => total + item.mixedGK, 0),
       yoghurt: orders.reduce((total, item) => total + item.yoghurt, 0),
       soedt: orders.reduce((total, item) => total + item.soedt, 0),
+    };
+    
+    const doneSums = {
+      plain: doneOrders.reduce((total, item) => total + item.plain, 0),
+      plainVHO: doneOrders.reduce((total, item) => total + item.plainVHO, 0),
+      plainGK: doneOrders.reduce((total, item) => total + item.plainGK, 0),
+      sesam: doneOrders.reduce((total, item) => total + item.sesam, 0),
+      sesamVHO: doneOrders.reduce((total, item) => total + item.sesamVHO, 0),
+      sesamGK: doneOrders.reduce((total, item) => total + item.sesamGK, 0),
+      mixed: doneOrders.reduce((total, item) => total + item.mixed, 0),
+      mixedVHO: doneOrders.reduce((total, item) => total + item.mixedVHO, 0),
+      mixedGK: doneOrders.reduce((total, item) => total + item.mixedGK, 0),
+      yoghurt: doneOrders.reduce((total, item) => total + item.yoghurt, 0),
+      soedt: doneOrders.reduce((total, item) => total + item.soedt, 0),
     };
 
     const updateDate = async (e: any) => {
@@ -99,6 +143,11 @@ const AdminPage = () => {
       });
 
       setOpeningTime('');
+    }
+
+    const isChecked = (item: any) => {
+      if (item.done) return true;
+      else return false;
     }
 
   return (
@@ -128,11 +177,10 @@ const AdminPage = () => {
 
         </div>
 
-        <p>{nextOpening}</p>
-        <p>{openingTime}</p>
+        <h2 className='text-xl font-bold m-10'>Orders 🥐</h2>
 
         <div className="overflow-x-auto ml-10 mr-10">
-          <table className='table'>
+          <table className='table table-xs table-zebra'>
             <thead>
               <tr>
                 <th>
@@ -164,7 +212,7 @@ const AdminPage = () => {
                 <tr key={id}>
                   <td>
                   <label>
-                    <input type="checkbox" className="checkbox" />
+                    <input type="checkbox" className="checkbox" checked={isChecked(item)} onChange={(e) => toggleSelectRow(e, item.id)}/>
                   </label>
                   </td>
                   <td>{item.name}</td>
@@ -204,8 +252,8 @@ const AdminPage = () => {
                 </tr>
               ))}
 
-              <tr className="bg-base-200">
-                <td colSpan={4}>Total</td>
+              <tr className="bg-blue-300 text-white">
+                <td colSpan={5}>Total</td>
                 <td>{sums.plain}</td>
                 <td>{sums.plainVHO}</td>
                 <td>{sums.plainGK}</td>
@@ -218,6 +266,102 @@ const AdminPage = () => {
                 <td>{sums.yoghurt}</td>
                 <td>{sums.soedt}</td>
                 <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* DONE */}
+
+        <h2 className='text-xl font-bold m-10'>Done 🎉</h2>
+
+        <div className="overflow-x-auto ml-10 mr-10 my-10">
+          <table className='table table-xs table-zebra'>
+            <thead>
+              <tr>
+                <th>
+                  <label>
+                    <input type="checkbox" className="checkbox" />
+                  </label>
+                </th>
+                <th>Navn</th>
+                <th>Telf</th>
+                <th>Dato</th>
+                <th>Pick-up</th>
+                <th>Plain</th>
+                <th>Plain m. VHO</th>
+                <th>Plain m. GK</th>
+                <th>Sesam</th>
+                <th>Sesam m. VHO</th>
+                <th>Sesam m. GK</th>
+                <th>Mixed</th>
+                <th>Mixed m. VHO</th>
+                <th>Mixed m. GK</th>
+                <th>Yoghurt</th>
+                <th>Sødt</th>
+                <th>Kommentar</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {doneOrders.map((item, id) => (
+                <tr key={id}>
+                  <td>
+                  <label>
+                    <input type="checkbox" className="checkbox" checked={item.done} onChange={(e) => toggleSelectRow(e, item.id)}/>
+                  </label>
+                  </td>
+                  <td>{item.name}</td>
+                  <td>{item.phone}</td>
+                  <td>{item.time}</td>
+                  <td>{item.pickup}</td>
+                  <td>{item.plain}</td>
+                  <td>{item.plainVHO}</td>
+                  <td>{item.plainGK}</td>
+                  <td>{item.sesam}</td>
+                  <td>{item.sesamVHO}</td>
+                  <td>{item.sesamGK}</td>
+                  <td>{item.mixed}</td>
+                  <td>{item.mixedVHO}</td>
+                  <td>{item.mixedGK}</td>
+                  <td>{item.yoghurt}</td>
+                  <td>{item.soedt}</td>
+                  <td>{item.comment}</td>
+                  <td>
+                    <button onClick={() => deleteItem(item.id)}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+
+              <tr className="bg-green-200">
+                <td colSpan={5}>Total</td>
+                <td>{doneSums.plain}</td>
+                <td>{doneSums.plainVHO}</td>
+                <td>{doneSums.plainGK}</td>
+                <td>{doneSums.sesam}</td>
+                <td>{doneSums.sesamVHO}</td>
+                <td>{doneSums.sesamGK}</td>
+                <td>{doneSums.mixed}</td>
+                <td>{doneSums.mixedVHO}</td>
+                <td>{doneSums.mixedGK}</td>
+                <td>{doneSums.yoghurt}</td>
+                <td>{doneSums.soedt}</td>
                 <td></td>
                 <td></td>
               </tr>
