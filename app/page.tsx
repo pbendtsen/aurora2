@@ -95,8 +95,6 @@ export default function Home() {
             style={{ backgroundImage: `url('/facade3.png')`, backgroundAttachment: 'fixed', position: 'fixed', zIndex: -1 }}>
         </div>
 
-          {/* <Image src="/facade3.png" alt="Logo" width={0} height={0} sizes="100vw" style={{width: '100%', height: 'auto'}}/> */}
-
         <div className="z-20 my-40">
           <Image src="/logo3.png" alt="Logo" width={300} height={200} />
         </div>

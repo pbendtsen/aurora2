@@ -2,6 +2,7 @@
 import { addDoc, collection, deleteDoc, doc, onSnapshot, query, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 import { db } from "../firebase";
+import { useRouter } from 'next/navigation';
 
 function sortTimes(times: any[]): any[] {
   const definedTimes = times.filter(item => item.pickup !== undefined);
@@ -25,9 +26,18 @@ function sortTimes(times: any[]): any[] {
 
 const AdminPage = () => {
 
+    const router = useRouter();
+
     const [orders, setOrders] = useState<any[]>([])
     const [nextOpening, setNextOpening] = useState('')
     const [openingTime, setOpeningTime] = useState('')
+
+    useEffect(() => {
+      const isAuthenticated = localStorage.getItem('isLoggedIn') === 'true';
+      if (!isAuthenticated) {
+          router.push('/login');
+      }
+    }, []);
 
     useEffect(() => {
         const q = query(collection(db, 'orders'))
