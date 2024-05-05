@@ -27,7 +27,7 @@ async function fetchData(setNextOpening: any, setOpeningTime: any, setSoedt: any
 
 export default function Home() {
 
-  const keyValuePairs = {
+  const keyValuePairs: any = {
     plain: 13,
     plainVHO: 35,
     plainGK: 35,
@@ -43,7 +43,7 @@ export default function Home() {
     soedtAdditional: 25
   };
 
-  const [newOrder, setNewOrder] = useState({
+  const [newOrder, setNewOrder] = useState<any>({
     name: '', 
     phone: '',
     pickup: '', 
