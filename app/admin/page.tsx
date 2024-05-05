@@ -32,6 +32,9 @@ const AdminPage = () => {
     const [doneOrders, setDoneOrders] = useState<any[]>([])
     const [nextOpening, setNextOpening] = useState('')
     const [openingTime, setOpeningTime] = useState('')
+    const [soedt, setSoedt] = useState('')
+    const [soedtExtra, setSoedtExtra] = useState('')
+    const [soedtAdditional, setSoedtAdditional] = useState('')
 
     useEffect(() => {
       const isAuthenticated = localStorage.getItem('isLoggedIn') === 'true';
@@ -93,32 +96,38 @@ const AdminPage = () => {
 
 
     const sums = {
-      plain: orders.reduce((total, item) => total + item.plain, 0),
-      plainVHO: orders.reduce((total, item) => total + item.plainVHO, 0),
-      plainGK: orders.reduce((total, item) => total + item.plainGK, 0),
-      sesam: orders.reduce((total, item) => total + item.sesam, 0),
-      sesamVHO: orders.reduce((total, item) => total + item.sesamVHO, 0),
-      sesamGK: orders.reduce((total, item) => total + item.sesamGK, 0),
-      mixed: orders.reduce((total, item) => total + item.mixed, 0),
-      mixedVHO: orders.reduce((total, item) => total + item.mixedVHO, 0),
-      mixedGK: orders.reduce((total, item) => total + item.mixedGK, 0),
-      yoghurt: orders.reduce((total, item) => total + item.yoghurt, 0),
-      soedt: orders.reduce((total, item) => total + item.soedt, 0),
+      plain: orders.reduce((total, item) => total + (typeof item.plain === 'number' ? item.plain : 0), 0),
+      plainVHO: orders.reduce((total, item) => total + (typeof item.plainVHO === 'number' ? item.plainVHO : 0), 0),
+      plainGK: orders.reduce((total, item) => total + (typeof item.plainGK === 'number' ? item.plainGK : 0), 0),
+      sesam: orders.reduce((total, item) => total + (typeof item.sesam === 'number' ? item.sesam : 0), 0),
+      sesamVHO: orders.reduce((total, item) => total + (typeof item.sesamVHO === 'number' ? item.sesamVHO : 0), 0),
+      sesamGK: orders.reduce((total, item) => total + (typeof item.sesamGK === 'number' ? item.sesamGK : 0), 0),
+      mixed: orders.reduce((total, item) => total + (typeof item.mixed === 'number' ? item.mixed : 0), 0),
+      mixedVHO: orders.reduce((total, item) => total + (typeof item.mixedVHO === 'number' ? item.mixedVHO : 0), 0),
+      mixedGK: orders.reduce((total, item) => total + (typeof item.mixedGK === 'number' ? item.mixedGK : 0), 0),
+      yoghurt: orders.reduce((total, item) => total + (typeof item.yoghurt === 'number' ? item.yoghurt : 0), 0),
+      soedt: orders.reduce((total, item) => total + (typeof item.soedt === 'number' ? item.soedt : 0), 0),
+      soedtUC: orders.reduce((total, item) => total + (typeof item.soedtUC === 'number' ? item.soedtUC : 0), 0),
+      soedtAdditional: orders.reduce((total, item) => total + (typeof item.soedtAdditional === 'number' ? item.soedtAdditional : 0), 0),
     };
     
+    
     const doneSums = {
-      plain: doneOrders.reduce((total, item) => total + item.plain, 0),
-      plainVHO: doneOrders.reduce((total, item) => total + item.plainVHO, 0),
-      plainGK: doneOrders.reduce((total, item) => total + item.plainGK, 0),
-      sesam: doneOrders.reduce((total, item) => total + item.sesam, 0),
-      sesamVHO: doneOrders.reduce((total, item) => total + item.sesamVHO, 0),
-      sesamGK: doneOrders.reduce((total, item) => total + item.sesamGK, 0),
-      mixed: doneOrders.reduce((total, item) => total + item.mixed, 0),
-      mixedVHO: doneOrders.reduce((total, item) => total + item.mixedVHO, 0),
-      mixedGK: doneOrders.reduce((total, item) => total + item.mixedGK, 0),
-      yoghurt: doneOrders.reduce((total, item) => total + item.yoghurt, 0),
-      soedt: doneOrders.reduce((total, item) => total + item.soedt, 0),
+      plain: doneOrders.reduce((total, item) => total + (typeof item.plain === 'number' ? item.plain : 0), 0),
+      plainVHO: doneOrders.reduce((total, item) => total + (typeof item.plainVHO === 'number' ? item.plainVHO : 0), 0),
+      plainGK: doneOrders.reduce((total, item) => total + (typeof item.plainGK === 'number' ? item.plainGK : 0), 0),
+      sesam: doneOrders.reduce((total, item) => total + (typeof item.sesam === 'number' ? item.sesam : 0), 0),
+      sesamVHO: doneOrders.reduce((total, item) => total + (typeof item.sesamVHO === 'number' ? item.sesamVHO : 0), 0),
+      sesamGK: doneOrders.reduce((total, item) => total + (typeof item.sesamGK === 'number' ? item.sesamGK : 0), 0),
+      mixed: doneOrders.reduce((total, item) => total + (typeof item.mixed === 'number' ? item.mixed : 0), 0),
+      mixedVHO: doneOrders.reduce((total, item) => total + (typeof item.mixedVHO === 'number' ? item.mixedVHO : 0), 0),
+      mixedGK: doneOrders.reduce((total, item) => total + (typeof item.mixedGK === 'number' ? item.mixedGK : 0), 0),
+      yoghurt: doneOrders.reduce((total, item) => total + (typeof item.yoghurt === 'number' ? item.yoghurt : 0), 0),
+      soedt: doneOrders.reduce((total, item) => total + (typeof item.soedt === 'number' ? item.soedt : 0), 0),
+      soedtUC: doneOrders.reduce((total, item) => total + (typeof item.soedtUC === 'number' ? item.soedtUC : 0), 0),
+      soedtAdditional: doneOrders.reduce((total, item) => total + (typeof item.soedtAdditional === 'number' ? item.soedtAdditional : 0), 0),
     };
+    
 
     const updateDate = async (e: any) => {
       
@@ -144,6 +153,33 @@ const AdminPage = () => {
 
       setOpeningTime('');
     }
+    
+    const updateSoedt = async (e: any) => {
+      e.preventDefault()
+      const dessert = doc(db, "menu", "dessert");
+      await updateDoc(dessert, {
+        soedt: soedt
+      });
+      setSoedt('');
+    }
+    
+    const updateSoedtExtra = async (e: any) => {
+      e.preventDefault()
+      const dessert = doc(db, "menu", "dessert");
+      await updateDoc(dessert, {
+        soedt_extra: soedtExtra
+      });
+      setSoedtExtra('');
+    }
+
+    const updateSoedtAdditional = async (e: any) => {
+      e.preventDefault()
+      const dessert = doc(db, "menu", "dessert");
+      await updateDoc(dessert, {
+        additional: soedtAdditional
+      });
+      setSoedtAdditional('');
+    }
 
     const isChecked = (item: any) => {
       if (item.done) return true;
@@ -154,7 +190,7 @@ const AdminPage = () => {
     <div>
         <h1 className='text-xl font-bold m-10'>Dashboard</h1>
 
-        <div className='flex flex-col'>
+        <div className='flex flex-row flex-wrap'>
           <label className="form-control w-full max-w-xs ml-10 mb-10">
             <div className="label">
               <span className="label-text">Næste åbningsdato</span>
@@ -172,6 +208,36 @@ const AdminPage = () => {
             <div className='flex flex-row'>
               <input type="text" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={openingTime} onChange={(e) => setOpeningTime(e.target.value)}/>
               <button className="btn btn-primary text-white ml-5" onClick={updateTime}>Gem</button>
+            </div>
+          </label>
+          
+          <label className="form-control w-full max-w-xs ml-10 mb-10">
+            <div className="label">
+              <span className="label-text">Sødt</span>
+            </div>
+            <div className='flex flex-row'>
+              <input type="text" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={soedt} onChange={(e) => setSoedt(e.target.value)}/>
+              <button className="btn btn-primary text-white ml-5" onClick={updateSoedt}>Gem</button>
+            </div>
+          </label>
+
+          <label className="form-control w-full max-w-xs ml-10 mb-10">
+            <div className="label">
+              <span className="label-text">Sødt (m. topping)</span>
+            </div>
+            <div className='flex flex-row'>
+              <input type="text" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={soedtExtra} onChange={(e) => setSoedtExtra(e.target.value)}/>
+              <button className="btn btn-primary text-white ml-5" onClick={updateSoedtExtra}>Gem</button>
+            </div>
+          </label>
+          
+          <label className="form-control w-full max-w-xs ml-10 mb-10">
+            <div className="label">
+              <span className="label-text">Mere sødt (fx cookie)</span>
+            </div>
+            <div className='flex flex-row'>
+              <input type="text" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={soedtAdditional} onChange={(e) => setSoedtAdditional(e.target.value)}/>
+              <button className="btn btn-primary text-white ml-5" onClick={updateSoedtAdditional}>Gem</button>
             </div>
           </label>
 
@@ -202,7 +268,9 @@ const AdminPage = () => {
                 <th>Mixed m. VHO</th>
                 <th>Mixed m. GK</th>
                 <th>Yoghurt</th>
-                <th>Sødt</th>
+                <th>Sødt (-)</th>
+                <th>Sødt (+)</th>
+                <th>Cookie</th>
                 <th>Kommentar</th>
                 <th>Action</th>
               </tr>
@@ -229,7 +297,9 @@ const AdminPage = () => {
                   <td>{item.mixedVHO}</td>
                   <td>{item.mixedGK}</td>
                   <td>{item.yoghurt}</td>
+                  <td>{item.soedtUC}</td>
                   <td>{item.soedt}</td>
+                  <td>{item.soedtAdditional}</td>
                   <td>{item.comment}</td>
                   <td>
                     <button onClick={() => deleteItem(item.id)}>
@@ -264,7 +334,9 @@ const AdminPage = () => {
                 <td>{sums.mixedVHO}</td>
                 <td>{sums.mixedGK}</td>
                 <td>{sums.yoghurt}</td>
+                <td>{sums.soedtUC}</td>
                 <td>{sums.soedt}</td>
+                <td>{sums.soedtAdditional}</td>
                 <td></td>
                 <td></td>
               </tr>
@@ -299,7 +371,9 @@ const AdminPage = () => {
                 <th>Mixed m. VHO</th>
                 <th>Mixed m. GK</th>
                 <th>Yoghurt</th>
-                <th>Sødt</th>
+                <th>Sødt (-)</th>
+                <th>Sødt (+)</th>
+                <th>Cookie</th>
                 <th>Kommentar</th>
                 <th>Action</th>
               </tr>
@@ -326,7 +400,9 @@ const AdminPage = () => {
                   <td>{item.mixedVHO}</td>
                   <td>{item.mixedGK}</td>
                   <td>{item.yoghurt}</td>
+                  <td>{item.soedtUC}</td>
                   <td>{item.soedt}</td>
+                  <td>{item.soedtAdditional}</td>
                   <td>{item.comment}</td>
                   <td>
                     <button onClick={() => deleteItem(item.id)}>
@@ -361,7 +437,9 @@ const AdminPage = () => {
                 <td>{doneSums.mixedVHO}</td>
                 <td>{doneSums.mixedGK}</td>
                 <td>{doneSums.yoghurt}</td>
+                <td>{doneSums.soedtUC}</td>
                 <td>{doneSums.soedt}</td>
+                <td>{doneSums.soedtAdditional}</td>
                 <td></td>
                 <td></td>
               </tr>

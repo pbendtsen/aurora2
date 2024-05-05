@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { collection, addDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "./firebase";
 
-async function fetchData(setNextOpening: any, setOpeningTime: any) {
+async function fetchData(setNextOpening: any, setOpeningTime: any, setSoedt: any, setSoedtExtra: any, setSoedtAdditional: any) {
   const dato = doc(db, "open", "date");
   const datoSnap = await getDoc(dato);
   const time = doc(db, "open", "time");
   const timeSnap = await getDoc(time);
+  const dessert = doc(db, "menu", "dessert");
+  const dessertSnap = await getDoc(dessert);
 
   if (datoSnap.exists()) {
     setNextOpening(datoSnap.get('next_date'))
@@ -16,9 +18,30 @@ async function fetchData(setNextOpening: any, setOpeningTime: any) {
   if (timeSnap.exists()) {
     setOpeningTime(timeSnap.get('open_time'))
   }
+  if (dessertSnap.exists()) {
+    setSoedt(dessertSnap.get('soedt'))
+    setSoedtExtra(dessertSnap.get('soedt_extra'))
+    setSoedtAdditional(dessertSnap.get('additional'))
+  }
 }
 
 export default function Home() {
+
+  const keyValuePairs = {
+    plain: 13,
+    plainVHO: 35,
+    plainGK: 35,
+    sesam: 13,
+    sesamVHO: 35,
+    sesamGK: 35,
+    mixed: 13,
+    mixedVHO: 35,
+    mixedGK: 35,
+    yoghurt: 65,
+    soedt: 42,
+    soedtUC: 36,
+    soedtAdditional: 25
+  };
 
   const [newOrder, setNewOrder] = useState({
     name: '', 
@@ -36,18 +59,27 @@ export default function Home() {
     yoghurt: 0,
     soedt: 0,
     soedtUC: 0,
+    soedtAdditional: 0,
     comment: ''
   })
   const [nextOpening, setNextOpening] = useState('')
   const [openingTime, setOpeningTime] = useState('')
+  const [soedt, setSoedt] = useState('')
+  const [soedtExtra, setSoedtExtra] = useState('')
+  const [soedtAdditional, setSoedtAdditional] = useState('')
   const [loading, setLoading] = useState(true);
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [showLove, setShowLove] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [sum, setSum] = useState(0);
 
   useEffect(() => {
-    fetchData(setNextOpening, setOpeningTime).then(() => setLoading(false));;
+    fetchData(setNextOpening, setOpeningTime, setSoedt, setSoedtExtra, setSoedtAdditional).then(() => setLoading(false));
   }, []);
+  
+  useEffect(() => {
+    getSum();
+  }, [newOrder]);
 
   const addItem = async (e: any) => {
     e.preventDefault()
@@ -74,19 +106,31 @@ export default function Home() {
         yoghurt: newOrder.yoghurt,
         soedt: newOrder.soedt,
         soedtUC: newOrder.soedtUC,
+        soedtAdditional: newOrder.soedtAdditional,
         comment: newOrder.comment,
+        sum: sum,
         time: now.toLocaleDateString()
       }).then(() => {
         setLoadingAdd(false);
         setShowLove(true);
       })
-      setNewOrder({name: '', phone: '', pickup: '', plain: 0, plainVHO: 0, plainGK: 0, sesam: 0, sesamVHO: 0, sesamGK: 0, mixed: 0, mixedVHO: 0, mixedGK: 0, yoghurt: 0, soedt: 0, soedtUC: 0, comment: ''});
+      setNewOrder({name: '', phone: '', pickup: '', plain: 0, plainVHO: 0, plainGK: 0, sesam: 0, sesamVHO: 0, sesamGK: 0, mixed: 0, mixedVHO: 0, mixedGK: 0, yoghurt: 0, soedt: 0, soedtUC: 0, soedtAdditional: 0, comment: ''});
     }
     else {
       setShowError(true)
     }
   }
 
+  const getSum = () => {
+    let tmpSum = 0;
+    for (const prop in newOrder) {
+      if (newOrder.hasOwnProperty(prop) && prop !== 'name' && prop !== 'phone' && prop !== 'pickup' && prop !== 'comment') {
+        tmpSum += (newOrder[prop] as number) * (keyValuePairs[prop] || 0);
+      }
+    }
+    setSum(tmpSum);
+  }; 
+  
   return (
     <main>
       <div className="flex flex-col items-center">
@@ -100,7 +144,7 @@ export default function Home() {
         </div>
 
         {/* <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center z-20"> */}
-          <div className="card bg-base-100 shadow-xl mx-2">
+          <div className="card bg-base-100 shadow-xl mx-2 w-[500px] max-w-[95%]">
             <div className="card-body flex flex-col items-center">
               <h3 className="text-xl mb-5" style={{color: '#240ECA'}}>Næste åbningsdato</h3>
 
@@ -120,27 +164,27 @@ export default function Home() {
         {/* <div className="card bg-base-100 shadow-xl">
         <div className="card-body"> */}
           <h3 className="mt-10 text-xl" style={{color: '#240ECA'}}>Pre-order</h3>
-            <form className="flex flex-col items-center">
+            <form className="flex flex-col items-center w-full">
 
-              <label className="form-control w-full max-w-xs">
+              <label className="form-control w-full">
                 <div className="label">
                   <span className="label-text">Navn</span>
                 </div>
-                <input type="text" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.name} onChange={(e) => setNewOrder({...newOrder, name: e.target.value})}/>
+                <input type="text" className="input input-bordered focus:border-primary focus:outline-none w-full" value={newOrder.name} onChange={(e) => setNewOrder({...newOrder, name: e.target.value})}/>
               </label>
               
-              <label className="form-control w-full max-w-xs">
+              <label className="form-control w-full">
                 <div className="label">
                   <span className="label-text">Telefon nr.</span>
                 </div>
-                <input type="text" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.phone} onChange={(e) => setNewOrder({...newOrder, phone: e.target.value})}/>
+                <input type="text" className="input input-bordered focus:border-primary focus:outline-none w-full" value={newOrder.phone} onChange={(e) => setNewOrder({...newOrder, phone: e.target.value})}/>
               </label>
               
-              <label className="form-control w-full max-w-xs">
+              <label className="form-control w-full">
                 <div className="label">
                   <span className="label-text">Forventet afhentningstidspunkt</span>
                 </div>
-                <input type="time" className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.pickup} onChange={(e) => setNewOrder({...newOrder, pickup: e.target.value})}/>
+                <input type="time" className="input input-bordered focus:border-primary focus:outline-none w-full" value={newOrder.pickup} onChange={(e) => setNewOrder({...newOrder, pickup: e.target.value})}/>
               </label>
 
               <div className="collapse collapse-arrow bg-base-200 mt-5">
@@ -148,29 +192,29 @@ export default function Home() {
                 <h5 className="collapse-title text-lg font-medium">Plain boller</h5>
                 <div className="collapse-content flex flex-col">
 
-                  <label className="form-control w-full max-w-xs">
+                  <label className="form-control w-full">
                     <div className="label">
                       <span className="label-text">Plain bolle</span>
                       <span className="label-text">13 kr.</span>
                     </div>
                     {/* <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" /> */}
-                    <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.plain} onChange={(e) => setNewOrder({...newOrder, plain: parseInt(e.target.value)})}/>
+                    <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full" value={newOrder.plain} onChange={(e) => setNewOrder({...newOrder, plain: parseInt(e.target.value)})}/>
                   </label>
                   
-                  <label className="form-control w-full max-w-xs">
+                  <label className="form-control w-full">
                     <div className="label">
                       <span className="label-text">Plain bolle m. smør og Vesterhavsost</span>
                       <span className="label-text">35 kr.</span>
                     </div>
-                    <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.plainVHO} onChange={(e) => setNewOrder({...newOrder, plainVHO: parseInt(e.target.value)})}/>
+                    <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full" value={newOrder.plainVHO} onChange={(e) => setNewOrder({...newOrder, plainVHO: parseInt(e.target.value)})}/>
                   </label>
                   
-                  <label className="form-control w-full max-w-xs">
+                  <label className="form-control w-full">
                     <div className="label">
                       <span className="label-text">Plain bolle m. smør og Gammelknas</span>
                       <span className="label-text">35 kr.</span>
                     </div>
-                    <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.plainGK} onChange={(e) => setNewOrder({...newOrder, plainGK: parseInt(e.target.value)})}/>
+                    <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full" value={newOrder.plainGK} onChange={(e) => setNewOrder({...newOrder, plainGK: parseInt(e.target.value)})}/>
                   </label>
 
                 </div>
@@ -181,29 +225,29 @@ export default function Home() {
                 <h5 className="collapse-title text-lg font-medium">Sesam boller</h5>
                 <div className="collapse-content flex flex-col">
 
-                  <label className="form-control w-full max-w-xs">
+                  <label className="form-control w-full">
                     <div className="label">
                       <span className="label-text">Sesam bolle</span>
                       <span className="label-text">13 kr.</span>
                     </div>
                     {/* <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" /> */}
-                    <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.sesam} onChange={(e) => setNewOrder({...newOrder, sesam: parseInt(e.target.value)})}/>
+                    <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full" value={newOrder.sesam} onChange={(e) => setNewOrder({...newOrder, sesam: parseInt(e.target.value)})}/>
                   </label>
                   
-                  <label className="form-control w-full max-w-xs">
+                  <label className="form-control w-full">
                     <div className="label">
                       <span className="label-text">Sesam bolle m. smør og Vesterhavsost</span>
                       <span className="label-text">35 kr.</span>
                     </div>
-                    <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.sesamVHO} onChange={(e) => setNewOrder({...newOrder, sesamVHO: parseInt(e.target.value)})}/>
+                    <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full" value={newOrder.sesamVHO} onChange={(e) => setNewOrder({...newOrder, sesamVHO: parseInt(e.target.value)})}/>
                   </label>
                   
-                  <label className="form-control w-full max-w-xs">
+                  <label className="form-control w-full">
                     <div className="label">
                       <span className="label-text">Sesam bolle m. smør og Gammelknas</span>
                       <span className="label-text">35 kr.</span>
                     </div>
-                    <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.sesamGK} onChange={(e) => setNewOrder({...newOrder, sesamGK: parseInt(e.target.value)})}/>
+                    <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full" value={newOrder.sesamGK} onChange={(e) => setNewOrder({...newOrder, sesamGK: parseInt(e.target.value)})}/>
                   </label>
 
                 </div>
@@ -214,29 +258,29 @@ export default function Home() {
                 <h5 className="collapse-title text-lg font-medium">Mixed seeds boller</h5>
                 <div className="collapse-content flex flex-col">
 
-                  <label className="form-control w-full max-w-xs">
+                  <label className="form-control w-full">
                     <div className="label">
                       <span className="label-text">Mixed seeds bolle</span>
                       <span className="label-text">13 kr.</span>
                     </div>
                     {/* <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" /> */}
-                    <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.mixed} onChange={(e) => setNewOrder({...newOrder, mixed: parseInt(e.target.value)})}/>
+                    <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full" value={newOrder.mixed} onChange={(e) => setNewOrder({...newOrder, mixed: parseInt(e.target.value)})}/>
                   </label>
                   
-                  <label className="form-control w-full max-w-xs">
+                  <label className="form-control w-full">
                     <div className="label">
                       <span className="label-text">Mixed seeds bolle m. smør og Vesterhavsost</span>
                       <span className="label-text">35 kr.</span>
                     </div>
-                    <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.mixedVHO} onChange={(e) => setNewOrder({...newOrder, mixedVHO: parseInt(e.target.value)})}/>
+                    <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full" value={newOrder.mixedVHO} onChange={(e) => setNewOrder({...newOrder, mixedVHO: parseInt(e.target.value)})}/>
                   </label>
                   
-                  <label className="form-control w-full max-w-xs">
+                  <label className="form-control w-full">
                     <div className="label">
                       <span className="label-text">Mixed seeds bolle m. smør og Gammelknas</span>
                       <span className="label-text">35 kr.</span>
                     </div>
-                    <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.mixedGK} onChange={(e) => setNewOrder({...newOrder, mixedGK: parseInt(e.target.value)})}/>
+                    <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full" value={newOrder.mixedGK} onChange={(e) => setNewOrder({...newOrder, mixedGK: parseInt(e.target.value)})}/>
                   </label>
 
                 </div>
@@ -247,11 +291,12 @@ export default function Home() {
                 <h5 className="collapse-title text-lg font-medium">Yoghurt</h5>
                 <div className="collapse-content flex flex-col">
 
-                  <label className="form-control w-full max-w-xs">
+                  <label className="form-control w-full">
                     <div className="label">
                       <span className="label-text">Månedlig yoghurt servering m. granola</span>
+                      <span className="label-text">65 kr.</span>
                     </div>
-                    <input type="number" min={0} className="input input-bordered focus:border-blue-800 focus:outline-none w-full max-w-xs" value={newOrder.yoghurt} onChange={(e) => setNewOrder({...newOrder, yoghurt: parseInt(e.target.value)})}/>
+                    <input type="number" min={0} className="input input-bordered focus:border-blue-800 focus:outline-none w-full" value={newOrder.yoghurt} onChange={(e) => setNewOrder({...newOrder, yoghurt: parseInt(e.target.value)})}/>
                   </label>
 
                 </div>
@@ -262,29 +307,41 @@ export default function Home() {
                 <h5 className="collapse-title text-lg font-medium">Sødt</h5>
                 <div className="collapse-content flex flex-col">
 
-                  <label className="form-control w-full max-w-xs">
+                  <label className="form-control w-full">
                     <div className="label">
-                      <span className="label-text">Lemon glazed lemon poppy seed loaf</span>
+                      <span className="label-text">{soedt}</span>
+                      <span className="label-text">36 kr.</span>
                     </div>
-                    <input type="number" min={0} className="input input-bordered focus:border-blue-800 focus:outline-none w-full max-w-xs" value={newOrder.soedtUC} onChange={(e) => setNewOrder({...newOrder, soedtUC: parseInt(e.target.value)})}/>
+                    <input type="number" min={0} className="input input-bordered focus:border-blue-800 focus:outline-none w-full" value={newOrder.soedtUC} onChange={(e) => setNewOrder({...newOrder, soedtUC: parseInt(e.target.value)})}/>
                   </label>
                   
-                  <label className="form-control w-full max-w-xs">
+                  <label className="form-control w-full">
                     <div className="label">
-                      <span className="label-text">Lemon glazed lemon poppy seed loaf med mascarponecreme</span>
+                      <span className="label-text">{soedtExtra}</span>
+                      <span className="label-text">42 kr.</span>
                     </div>
-                    <input type="number" min={0} className="input input-bordered focus:border-blue-800 focus:outline-none w-full max-w-xs" value={newOrder.soedt} onChange={(e) => setNewOrder({...newOrder, soedt: parseInt(e.target.value)})}/>
+                    <input type="number" min={0} className="input input-bordered focus:border-blue-800 focus:outline-none w-full" value={newOrder.soedt} onChange={(e) => setNewOrder({...newOrder, soedt: parseInt(e.target.value)})}/>
+                  </label>
+                  
+                  <label className="form-control w-full">
+                    <div className="label">
+                      <span className="label-text">{soedtAdditional}</span>
+                      <span className="label-text">25 kr.</span>
+                    </div>
+                    <input type="number" min={0} className="input input-bordered focus:border-blue-800 focus:outline-none w-full" value={newOrder.soedtAdditional} onChange={(e) => setNewOrder({...newOrder, soedtAdditional: parseInt(e.target.value)})}/>
                   </label>
 
                 </div>
               </div>
 
-              <label className="form-control w-full max-w-xs">
+              <label className="form-control w-full">
                 <div className="label">
                   <span className="label-text">Kommentar</span>
                 </div>
-                <textarea className="textarea textarea-bordered focus:border-primary focus:outline-none w-full max-w-xs" value={newOrder.comment} onChange={(e) => setNewOrder({...newOrder, comment: e.target.value})}/>
+                <textarea className="textarea textarea-bordered focus:border-primary focus:outline-none w-full" value={newOrder.comment} onChange={(e) => setNewOrder({...newOrder, comment: e.target.value})}/>
               </label>
+
+              <h3 className="mt-6">Total: {sum} kr.</h3>
 
               <button className="btn btn-outline hover:bg-white text-white rounded-full mb-6 mt-5" style={{color: '#240ECA'}} type="submit" onClick={addItem}>
                 {loadingAdd ? (
