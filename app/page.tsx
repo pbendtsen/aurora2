@@ -149,19 +149,19 @@ export default function Home() {
         <div className="bg-cover bg-center w-full h-full absolute top-0 left-0"
             style={{ 
                 backgroundImage: `url('${imageUrl}')`, 
-                backgroundAttachment: 'fixed', 
+                // backgroundAttachment: 'fixed', 
                 position: 'fixed', 
                 zIndex: -1,
-                backgroundSize: 'cover',
+                // backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
             }}>
-            <style jsx>{`
+            {/* <style jsx>{`
                 @media (max-width: 640px) {
                     .bg-cover {
                         background-size: contain;
                     }
                 }
-            `}</style>
+            `}</style> */}
         </div>
 
         <div className="z-20 my-40">
