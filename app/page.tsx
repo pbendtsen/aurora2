@@ -135,8 +135,26 @@ export default function Home() {
     <main>
       <div className="flex flex-col items-center">
         
-        <div className="bg-cover bg-center w-full h-full absolute top-0 left-0"
+        {/* <div className="bg-cover bg-center w-full h-full absolute top-0 left-0"
             style={{ backgroundImage: `url('/facade3.png')`, backgroundAttachment: 'fixed', position: 'fixed', zIndex: -1 }}>
+        </div> */}
+
+        <div className="bg-cover bg-center w-full h-full absolute top-0 left-0"
+            style={{ 
+                backgroundImage: `url('/facade3.png')`, 
+                backgroundAttachment: 'fixed', 
+                position: 'fixed', 
+                zIndex: -1,
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+            }}>
+            <style jsx>{`
+                @media (max-width: 640px) {
+                    .bg-cover {
+                        background-size: contain;
+                    }
+                }
+            `}</style>
         </div>
 
         <div className="z-20 my-40">
