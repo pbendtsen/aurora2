@@ -325,7 +325,7 @@ const AdminPage = () => {
               ))}
 
               <tr className="bg-blue-300">
-                <td colSpan={6}>Total</td>
+                <td colSpan={5}>Total</td>
                 <td>{sums.plain}</td>
                 <td>{sums.plainVHO}</td>
                 <td>{sums.plainGK}</td>
@@ -339,6 +339,7 @@ const AdminPage = () => {
                 <td>{sums.soedtUC}</td>
                 <td>{sums.soedt}</td>
                 <td>{sums.soedtAdditional}</td>
+                <td></td>
                 <td></td>
                 <td></td>
               </tr>
@@ -430,7 +431,7 @@ const AdminPage = () => {
               ))}
 
               <tr className="bg-green-200">
-                <td colSpan={6}>Total</td>
+                <td colSpan={5}>Total</td>
                 <td>{doneSums.plain}</td>
                 <td>{doneSums.plainVHO}</td>
                 <td>{doneSums.plainGK}</td>
@@ -444,6 +445,7 @@ const AdminPage = () => {
                 <td>{doneSums.soedtUC}</td>
                 <td>{doneSums.soedt}</td>
                 <td>{doneSums.soedtAdditional}</td>
+                <td></td>
                 <td></td>
                 <td></td>
               </tr>
