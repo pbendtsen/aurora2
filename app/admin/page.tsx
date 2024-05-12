@@ -271,6 +271,7 @@ const AdminPage = () => {
                 <th>Sødt (-)</th>
                 <th>Sødt (+)</th>
                 <th>Cookie</th>
+                <th>Sum</th>
                 <th>Kommentar</th>
                 <th>Action</th>
               </tr>
@@ -300,6 +301,7 @@ const AdminPage = () => {
                   <td>{item.soedtUC}</td>
                   <td>{item.soedt}</td>
                   <td>{item.soedtAdditional}</td>
+                  <td>{item.sum}</td>
                   <td>{item.comment}</td>
                   <td>
                     <button onClick={() => deleteItem(item.id)}>
@@ -322,8 +324,8 @@ const AdminPage = () => {
                 </tr>
               ))}
 
-              <tr className="bg-blue-300 text-white">
-                <td colSpan={5}>Total</td>
+              <tr className="bg-blue-300">
+                <td colSpan={6}>Total</td>
                 <td>{sums.plain}</td>
                 <td>{sums.plainVHO}</td>
                 <td>{sums.plainGK}</td>
@@ -374,6 +376,7 @@ const AdminPage = () => {
                 <th>Sødt (-)</th>
                 <th>Sødt (+)</th>
                 <th>Cookie</th>
+                <th>Sum</th>
                 <th>Kommentar</th>
                 <th>Action</th>
               </tr>
@@ -403,6 +406,7 @@ const AdminPage = () => {
                   <td>{item.soedtUC}</td>
                   <td>{item.soedt}</td>
                   <td>{item.soedtAdditional}</td>
+                  <td>{item.sum}</td>
                   <td>{item.comment}</td>
                   <td>
                     <button onClick={() => deleteItem(item.id)}>
@@ -426,7 +430,7 @@ const AdminPage = () => {
               ))}
 
               <tr className="bg-green-200">
-                <td colSpan={5}>Total</td>
+                <td colSpan={6}>Total</td>
                 <td>{doneSums.plain}</td>
                 <td>{doneSums.plainVHO}</td>
                 <td>{doneSums.plainGK}</td>

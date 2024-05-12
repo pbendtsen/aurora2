@@ -203,7 +203,7 @@ export default function Home() {
                   
                   <label className="form-control w-full">
                     <div className="label">
-                      <span className="label-text">Plain bolle m. smør og Vesterhavsost</span>
+                      <span className="label-text">Plain bolle med smør og Vesterhavsost</span>
                       <span className="label-text">35 kr.</span>
                     </div>
                     <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full" value={newOrder.plainVHO} onChange={(e) => setNewOrder({...newOrder, plainVHO: parseInt(e.target.value)})}/>
@@ -211,7 +211,7 @@ export default function Home() {
                   
                   <label className="form-control w-full">
                     <div className="label">
-                      <span className="label-text">Plain bolle m. smør og Gammelknas</span>
+                      <span className="label-text">Plain bolle med smør og Gammelknas</span>
                       <span className="label-text">35 kr.</span>
                     </div>
                     <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full" value={newOrder.plainGK} onChange={(e) => setNewOrder({...newOrder, plainGK: parseInt(e.target.value)})}/>
@@ -222,12 +222,12 @@ export default function Home() {
 
               <div className="collapse collapse-arrow bg-base-200 mt-2">
                 <input type="checkbox" name="my-accordion-2" />
-                <h5 className="collapse-title text-lg font-medium">Sesam boller</h5>
+                <h5 className="collapse-title text-lg font-medium">Sesamboller</h5>
                 <div className="collapse-content flex flex-col">
 
                   <label className="form-control w-full">
                     <div className="label">
-                      <span className="label-text">Sesam bolle</span>
+                      <span className="label-text">Sesambolle</span>
                       <span className="label-text">13 kr.</span>
                     </div>
                     {/* <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" /> */}
@@ -236,7 +236,7 @@ export default function Home() {
                   
                   <label className="form-control w-full">
                     <div className="label">
-                      <span className="label-text">Sesam bolle m. smør og Vesterhavsost</span>
+                      <span className="label-text">Sesambolle med smør og Vesterhavsost</span>
                       <span className="label-text">35 kr.</span>
                     </div>
                     <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full" value={newOrder.sesamVHO} onChange={(e) => setNewOrder({...newOrder, sesamVHO: parseInt(e.target.value)})}/>
@@ -244,7 +244,7 @@ export default function Home() {
                   
                   <label className="form-control w-full">
                     <div className="label">
-                      <span className="label-text">Sesam bolle m. smør og Gammelknas</span>
+                      <span className="label-text">Sesambolle med smør og Gammelknas</span>
                       <span className="label-text">35 kr.</span>
                     </div>
                     <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full" value={newOrder.sesamGK} onChange={(e) => setNewOrder({...newOrder, sesamGK: parseInt(e.target.value)})}/>
@@ -269,7 +269,7 @@ export default function Home() {
                   
                   <label className="form-control w-full">
                     <div className="label">
-                      <span className="label-text">Mixed seeds bolle m. smør og Vesterhavsost</span>
+                      <span className="label-text">Mixed seeds bolle med smør og Vesterhavsost</span>
                       <span className="label-text">35 kr.</span>
                     </div>
                     <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full" value={newOrder.mixedVHO} onChange={(e) => setNewOrder({...newOrder, mixedVHO: parseInt(e.target.value)})}/>
@@ -277,7 +277,7 @@ export default function Home() {
                   
                   <label className="form-control w-full">
                     <div className="label">
-                      <span className="label-text">Mixed seeds bolle m. smør og Gammelknas</span>
+                      <span className="label-text">Mixed seeds bolle med smør og Gammelknas</span>
                       <span className="label-text">35 kr.</span>
                     </div>
                     <input type="number" min={0} className="input input-bordered focus:border-primary focus:outline-none w-full" value={newOrder.mixedGK} onChange={(e) => setNewOrder({...newOrder, mixedGK: parseInt(e.target.value)})}/>
@@ -288,12 +288,12 @@ export default function Home() {
 
               <div className="collapse collapse-arrow bg-base-200 mt-2">
                 <input type="checkbox" name="my-accordion-2" />
-                <h5 className="collapse-title text-lg font-medium">Yoghurt</h5>
+                <h5 className="collapse-title text-lg font-medium">Månedens yoghurt</h5>
                 <div className="collapse-content flex flex-col">
 
                   <label className="form-control w-full">
                     <div className="label">
-                      <span className="label-text">Månedlig yoghurt servering m. granola</span>
+                      <span className="label-text">Månedlig yoghurt servering med granola</span>
                       <span className="label-text">65 kr.</span>
                     </div>
                     <input type="number" min={0} className="input input-bordered focus:border-blue-800 focus:outline-none w-full" value={newOrder.yoghurt} onChange={(e) => setNewOrder({...newOrder, yoghurt: parseInt(e.target.value)})}/>
@@ -304,7 +304,7 @@ export default function Home() {
               
               <div className="collapse collapse-arrow bg-base-200 my-2">
                 <input type="checkbox" name="my-accordion-2" />
-                <h5 className="collapse-title text-lg font-medium">Sødt</h5>
+                <h5 className="collapse-title text-lg font-medium">Månedens sødt</h5>
                 <div className="collapse-content flex flex-col">
 
                   <label className="form-control w-full">
