@@ -1,6 +1,6 @@
 'use client'
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { collection, addDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "./firebase";
 
@@ -72,6 +72,8 @@ export default function Home() {
   const [showLove, setShowLove] = useState(false);
   const [showError, setShowError] = useState(false);
   const [sum, setSum] = useState(0);
+  const [imageUrl, setImageUrl] = useState('/facade3.png');
+
 
   useEffect(() => {
     fetchData(setNextOpening, setOpeningTime, setSoedt, setSoedtExtra, setSoedtAdditional).then(() => setLoading(false));
@@ -80,6 +82,11 @@ export default function Home() {
   useEffect(() => {
     getSum();
   }, [newOrder]);
+
+  useLayoutEffect(() => {
+    const isMobile = window.innerWidth <= 640;
+    setImageUrl(isMobile ? '/facade.png' : '/facade3.png');
+  }, []);
 
   const addItem = async (e: any) => {
     e.preventDefault()
@@ -141,7 +148,7 @@ export default function Home() {
 
         <div className="bg-cover bg-center w-full h-full absolute top-0 left-0"
             style={{ 
-                backgroundImage: `url('/facade3.png')`, 
+                backgroundImage: `url('${imageUrl}')`, 
                 backgroundAttachment: 'fixed', 
                 position: 'fixed', 
                 zIndex: -1,
