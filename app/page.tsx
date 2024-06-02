@@ -318,7 +318,7 @@ export default function Home() {
 
                   <label className="form-control w-full">
                     <div className="label">
-                      <span className="label-text">Søtoftegård yoghurt, rabarberkompot, granola</span>
+                      <span className="label-text">Søtoftegård yoghurt, jordbær/hyldeblomstkompot, Psyche olivenolie og granola</span>
                       <span className="label-text">65 kr.</span>
                     </div>
                     <input type="number" min={0} className="input input-bordered focus:border-blue-800 focus:outline-none w-full" value={newOrder.yoghurt} onChange={(e) => setNewOrder({...newOrder, yoghurt: parseInt(e.target.value)})}/>
