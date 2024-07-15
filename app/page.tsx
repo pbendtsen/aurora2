@@ -318,7 +318,7 @@ export default function Home() {
 
                   <label className="form-control w-full">
                     <div className="label">
-                      <span className="label-text">Søtoftegård yoghurt, jordbær/hyldeblomstkompot, Psyche olivenolie og granola</span>
+                      <span className="label-text">Søtoftegård yoghurt, stikkelsbærkompot, Psyche olivenolie og granola</span>
                       <span className="label-text">65 kr.</span>
                     </div>
                     <input type="number" min={0} className="input input-bordered focus:border-blue-800 focus:outline-none w-full" value={newOrder.yoghurt} onChange={(e) => setNewOrder({...newOrder, yoghurt: parseInt(e.target.value)})}/>
@@ -347,14 +347,16 @@ export default function Home() {
                     </div>
                     <input type="number" min={0} className="input input-bordered focus:border-blue-800 focus:outline-none w-full" value={newOrder.soedt} onChange={(e) => setNewOrder({...newOrder, soedt: parseInt(e.target.value)})}/>
                   </label>
-                  
-                  <label className="form-control w-full">
-                    <div className="label">
-                      <span className="label-text">{soedtAdditional}</span>
-                      <span className="label-text">25 kr.</span>
-                    </div>
-                    <input type="number" min={0} className="input input-bordered focus:border-blue-800 focus:outline-none w-full" value={newOrder.soedtAdditional} onChange={(e) => setNewOrder({...newOrder, soedtAdditional: parseInt(e.target.value)})}/>
-                  </label>
+
+                  {soedtAdditional && (
+                    <label className="form-control w-full">
+                      <div className="label">
+                        <span className="label-text">{soedtAdditional}</span>
+                        <span className="label-text">25 kr.</span>
+                      </div>
+                      <input type="number" min={0} className="input input-bordered focus:border-blue-800 focus:outline-none w-full" value={newOrder.soedtAdditional} onChange={(e) => setNewOrder({...newOrder, soedtAdditional: parseInt(e.target.value)})}/>
+                    </label>
+                  )}
 
                 </div>
               </div>
