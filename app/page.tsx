@@ -39,7 +39,7 @@ export default function Home() {
     mixedGK: 35,
     yoghurt: 65,
     soedt: 42,
-    soedtUC: 36,
+    soedtUC: 42,
     soedtAdditional: 25
   };
 
@@ -311,6 +311,7 @@ export default function Home() {
                 </div>
               </div>
 
+              {/*
               <div className="collapse collapse-arrow bg-base-200 mt-2">
                 <input type="checkbox" name="my-accordion-2" />
                 <h5 className="collapse-title text-lg font-medium">Månedens yoghurt</h5>
@@ -326,6 +327,7 @@ export default function Home() {
 
                 </div>
               </div>
+              */}
               
               <div className="collapse collapse-arrow bg-base-200 my-2">
                 <input type="checkbox" name="my-accordion-2" />
@@ -335,7 +337,7 @@ export default function Home() {
                   <label className="form-control w-full">
                     <div className="label">
                       <span className="label-text">{soedt}</span>
-                      <span className="label-text">36 kr.</span>
+                      <span className="label-text">42 kr.</span>
                     </div>
                     <input type="number" min={0} className="input input-bordered focus:border-blue-800 focus:outline-none w-full" value={newOrder.soedtUC} onChange={(e) => setNewOrder({...newOrder, soedtUC: parseInt(e.target.value)})}/>
                   </label>
